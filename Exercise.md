@@ -216,5 +216,111 @@ $train->save();
 
 ## Display datas on page:
 
+1. set up the routes:
+```php
+<?php       
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Guests\TrainController;  
 
+Route::get('/', [TrainController::class, 'index'])->name('home');
+```
+
+2. set up the controller to display trains to departure from now:
+```php
+<?php
+namespace App\Http\Controllers\Guests;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Train;  
+
+class TrainController extends Controller
+{
+    public function index()
+    {
+        $actualTime = now()->format('H:i');
+        $trains = Train::whereTime('orario_partenza', '>' , $actualTime )->get();
+        return view('guests.index', compact('trains'));
+    } 
+}
+....
+```
+
+1. Create the view: `layouts/app.blade.php` and insert the code:
+
+```php
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Laravel</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    @vite('resources/js/app.js')
+
+</head>
+
+<body>
+    
+    <header>Header</header>
+
+    <main>
+        @yield('content')
+    </main>
+
+    <footer>Footer</footer>
+
+</body>
+
+</html>
+```
+
+2. Create the view: `guests/index.blade.php` and insert the code:
+
+```php
+@extends('layouts.app')
+
+@section('content')
+    <div class="container">
+        <h1 class="text-center">Treni</h1>
+        <div class="row">
+            @forelse ($trains as $train)
+                <div class="col-4">
+                    <div class="card">
+                        <h2>{{ $train->codice_treno }}</h2>
+                        <h3>{{ $train->azienda }}</h3>
+                        <h3>{{ $train->stazione_partenza }}</h3>
+                        <h3>{{ $train->stazione_arrivo }}</h3>
+                        <h3>{{ $train->orario_partenza }}</h3>
+                        <h3>{{ $train->orario_arrivo }}</h3>
+                        <h3>{{ $train->numero_carrozze }}</h3>
+                        @if ($train->in_orario == 1)
+                            <h3>In Orario</h3>
+                        @elseif ($train->cancellato == 1)
+                            <h3>Cancellato</h3>
+                        @else
+                            <h3>In ritardo</h3>
+                        @endif
+
+                    </div>
+                </div>
+
+            @empty
+
+                <h2>No more trains available at the moment</h2>
+            @endforelse
+        </div>
+    </div>
+@endsection
+```
+
+## Conclusion:
+
+### GOOD JOB! NOW U HAVE A BADIC EXERCISE IMPROVE IT WITH SOME CSS !
