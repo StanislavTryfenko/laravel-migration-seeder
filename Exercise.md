@@ -198,12 +198,12 @@ class Train extends Model
    
 ```powerShell
 $train = new App\Models\Train();
-$train->azienda = 'Trenitalia';
-$train->stazione_partenza = 'Milano';
-$train->stazione_arrivo = 'Napoli';
-$train->orario_partenza = '10:00';
-$train->orario_arrivo = '11:00';
-$train->codice_treno = 'TRE12345';
+$train->azienda = 'Italo';
+$train->stazione_partenza = 'Roma';
+$train->stazione_arrivo = 'Bergamo';
+$train->orario_partenza = '20:00';
+$train->orario_arrivo = '23:00';
+$train->codice_treno = 'ITA37443';
 $train->numero_carrozze = 10;
 $train->in_orario = true;
 $train->cancellato = false;
@@ -215,5 +215,6 @@ $train->save();
 4. write exit and check the result in PhpMyAdmin
 
 ## Display datas on page:
+
 
 

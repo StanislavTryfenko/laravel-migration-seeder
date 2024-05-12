@@ -13,8 +13,10 @@ class TrainController extends Controller
      */
     public function index()
     {
-        $trains = Train::all();
-        return view('home', compact('trains'));
+        $actualTime = now()->format('H:i');
+        //dd($actualTime);
+        $trains = Train::whereTime('orario_partenza', '>' , $actualTime )->get();
+        return view('guests.index', compact('trains'));
     }   
     /**
      * Show the form for creating a new resource.
