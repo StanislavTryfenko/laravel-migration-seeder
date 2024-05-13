@@ -13,9 +13,9 @@ class TrainController extends Controller
      */
     public function index()
     {
-        $actualTime = now()->format('H:i');
-        //dd($actualTime);
-        $trains = Train::whereTime('orario_partenza', '>' , $actualTime )->get();
+        $actualDay = now()->format('Y-m-d');
+        //dd($actualDay);
+        $trains = Train::whereDate('giorno_partenza', '>' , $actualDay )->get();
         return view('guests.index', compact('trains'));
     }   
     /**

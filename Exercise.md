@@ -68,7 +68,7 @@ return new class extends Migration
     {
         Schema::create('trains', function (Blueprint $table) {
             $table->id();
-            $table->string('azienda', 30)->nullable();
+            $table->string('azienda', 50)->nullable();
             $table->string('stazione_partenza', 50);
             $table->string('stazione_arrivo', 50);
             $table->time('orario_partenza');
@@ -214,6 +214,49 @@ $train->save();
 
 4. write exit and check the result in PhpMyAdmin
 
+## Seeder:
+
+1. Write in power shell: php artisan make:seeder TrainsSeeder
+2. Configure the seeder with that code:
+
+```php
+<?php
+
+namespace Database\Seeders;
+
+use Faker\Generator as Faker;
+
+use Illuminate\Database\Seeder;
+use App\Models\Train;
+
+class TrainsSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(Faker $faker): void
+    {
+        for ($i = 0; $i < 100; $i++) {
+            $train = new Train();
+            $train->azienda = $faker->company();
+            $train->stazione_partenza = $faker->city();
+            $train->stazione_arrivo = $faker->city();
+            $train->orario_partenza = $faker->time();
+            $train->orario_arrivo = $faker->time();
+            $train->giorno_partenza = $faker->date('Y-m-d', '+ 1 year');
+            $train->giorno_arrivo = $faker->date('Y-m-d', '+ 1 year');
+            $train->codice_treno = $faker->bothify('???-####');
+            $train->numero_carrozze = $faker->numberBetween(8, 24);
+            $train->in_orario = $faker->boolean();
+            $train->cancellato = $faker->boolean();
+            $train->save();
+        }
+    }
+}
+```
+
+3. Use on power shell: php artisan db:seed TrainsSeeder
+
 ## Display datas on page:
 
 1. set up the routes:
@@ -292,7 +335,7 @@ class TrainController extends Controller
         <h1 class="text-center">Treni</h1>
         <div class="row">
             @forelse ($trains as $train)
-                <div class="col-4">
+                <div class="col-3">
                     <div class="card">
                         <h2>{{ $train->codice_treno }}</h2>
                         <h3>{{ $train->azienda }}</h3>
@@ -323,4 +366,4 @@ class TrainController extends Controller
 
 ## Conclusion:
 
-### GOOD JOB! NOW U HAVE A BADIC EXERCISE IMPROVE IT WITH SOME CSS !
+### GOOD JOB!!! have fun with css :(

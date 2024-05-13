@@ -5,7 +5,7 @@
         <h1 class="text-center">Treni</h1>
         <div class="row">
             @forelse ($trains as $train)
-                <div class="col-4">
+                <div class="col-3 g-4">
                     <div class="card">
                         <h2>{{ $train->codice_treno }}</h2>
                         <h3>{{ $train->azienda }}</h3>
